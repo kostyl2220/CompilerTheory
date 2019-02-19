@@ -1,0 +1,8 @@
+﻿  Assignment.cpp
+  Program.cpp
+e:\ip-51\4 course\8 semester\compilators\consolecompiler\consolecompiler\program.cpp(14): warning C5043: 'Program::run': exception specification does not match previous declaration
+  e:\ip-51\4 course\8 semester\compilators\consolecompiler\consolecompiler\program.h(14): note: see declaration of 'Program::run'
+e:\ip-51\4 course\8 semester\compilators\consolecompiler\consolecompiler\program.cpp(29): warning C4018: '<': signed/unsigned mismatch
+  SyntaxParse.cpp
+  Generating Code...
+  ConsoleCompiler.vcxproj -> E:\IP-51\4 course\8 semester\Compilators\ConsoleCompiler\Debug\ConsoleCompiler.exe
