@@ -8,6 +8,7 @@
 #include "CreateVariable.h"
 #include "StandartFunction.h"
 #include "Function.h"
+#include "HelperFuncs.h"
 
 static int COUNT_OF_RESERVED = 9;
 std::string reserved[] = {
@@ -20,76 +21,14 @@ bool isReserved(std::string const& word) {
 	return false;
 }
 
-void incCode(vector<std::string> const& code, size_t &i, size_t &j) {
-	if (j == (code[i].size())) 
-	{
-		++i;
-		j = 0;
-	}
-	else
-	{
-		++j;
-	}
-	while (!endOfCode(code, i) && code[i].empty())
-	{
-		++i;
-		j = 0;
-	}
+bool NeedToBeClosed(Element* head)
+{
+	return head->getType() == LEAF
+		|| head->getType() == ASSIGN
+		|| head->getType() == CREATE
+		|| head->getType() == NODE
+		|| head->getType() == FUNC;
 }
-
-bool endOfCode(vector<std::string> const& code, size_t i) {
-	if (i >= code.size()) return true;
-	return false;
-}
-
-
-char nextChar(vector<std::string> const& code, size_t &i, size_t&j) {
-	while (!endOfCode(code, i) &&
-		code[i][j] == ' ') incCode(code, i, j);
-	if (endOfCode(code, i))
-		return '\0';
-	return code[i][j];
-}
-
-std::string nextWord(vector<std::string> const& code, size_t& i, size_t& j){
-	std::string temp;
-	while (!endOfCode(code, i) &&
-		code[i][j] == ' ') incCode(code, i, j);
-	if (endOfCode(code, i))
-		return "";
-	int k = 0;
-	if (code[i][j] == '"') {//if its string
-		temp += code[i][j];
-		incCode(code, i, j);
-		if (endOfCode(code, i))
-			throw CompileExeption("Unexpected end of code is string", i, j);
-		while (code[i][j] != '"') {//while dont close
-			temp += code[i][j];//read char
-			incCode(code, i, j);
-			if (endOfCode(code, i))
-				throw CompileExeption("Unexpected end of code is string", i, j);
-		}
-		temp += code[i][j];
-		incCode(code, i, j);
-		return temp;
-	}
-	while (code[i][j] != '\0' && //else while not op char
-		code[i][j] != ' ' && code[i][j] != '=' &&
-		code[i][j] != ';' &&
-		code[i][j] != '+' && code[i][j] != '-'
-		&& code[i][j] != '*' && code[i][j] != '/'
-		&& code[i][j] != '(' && code[i][j] != ')'
-		&& code[i][j] != '{' && code[i][j] != '}') {
-		temp += code[i][j];
-		++j;
-		++k;
-	}
-	if (j == (code[i].size())) incCode(code, i, j);
-	//temp += '\0';
-	return temp;
-}
-
-
 
 //1. Extend assign
 //2. Look into adding two blocks
@@ -137,11 +76,7 @@ Element* totalParse(Element* head, vector<std::string> const& code, size_t &i, s
 			head = new Assignment(head->getValue(), totalParse(new Element, code, i, j, brackets), remI, remJ);
 		}		
 		else if (code[i][j] == '{') {//block of code
-			if (head->getType() == LEAF
-				|| head->getType() == ASSIGN
-				|| head->getType() == CREATE
-				|| head->getType() == NODE
-				|| head->getType() == FUNC)
+			if (NeedToBeClosed(head))
 				throw CompileExeption("Unexpected token", i, j);
 			else if (head->getType() != EMPTY)
 				return head;
@@ -157,6 +92,10 @@ Element* totalParse(Element* head, vector<std::string> const& code, size_t &i, s
 				}
 				if (nextChar(code, i, j) == ';') 
 				{
+					incCode(code, i, j);
+				}
+				while (!endOfCode(code, i) && code[i][j] == ' ' || //skip spaces
+					code[i][j] == '\0' || code[i][j] == '\t') {
 					incCode(code, i, j);
 				}
 				if (endOfCode(code, i))
@@ -184,11 +123,7 @@ Element* totalParse(Element* head, vector<std::string> const& code, size_t &i, s
 		else
 		{
 
-			if (head->getType() == LEAF//for this types restricted new token
-				|| head->getType() == ASSIGN
-				|| head->getType() == CREATE
-				|| head->getType() == NODE
-				|| head->getType() == FUNC)
+			if (NeedToBeClosed(head))
 				throw CompileExeption("Unexpected token", i, j);
 			else if (head->getType() != EMPTY)//for other en of command(if not empty)
 				return head;
@@ -374,11 +309,7 @@ Element* totalParse(Element* head, vector<std::string> const& code, size_t &i, s
 			}
 		}
 	}
-	if (head->getType() == LEAF//restricted for them end of code without brackets
-		|| head->getType() == ASSIGN
-		|| head->getType() == CREATE
-		|| head->getType() == NODE
-		|| head->getType() == FUNC)
+	if (NeedToBeClosed(head))
 		throw CompileExeption("Unexpected end of code", i - i, code[i - i].size() - 1);
 	else return head;
 }

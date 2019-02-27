@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include "Program.h"
+#include "LexicParser.h"
 
 std::vector<std::string> GetLines(char const* fileName)
 {
@@ -58,6 +59,8 @@ int main(int argc, char* argv[])
 		showMessage(e.error(), "Type mismatch");
 	}
 	pr.outVarList(&out);
+	//PrintTokens(LexicalParse(code), &out);
+
 	system("pause");
 }
 

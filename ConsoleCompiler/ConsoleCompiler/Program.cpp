@@ -8,6 +8,7 @@
 #include "CreateVariable.h"
 #include "StandartFunction.h"
 #include "Function.h"
+#include "HelperFuncs.h"
 
 Program::Program() : Element(PROG, "") {};
 

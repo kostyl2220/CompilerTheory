@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "LexicParser.h"
 #include <map>
-#include "Exceptions.h"
+#include "HelperFuncs.h"
 
 static std::map<char, TokenType> mapOfTokens =
 {
@@ -34,57 +34,45 @@ static std::map<std::string, TokenType> mapOfReserved =
 	{"func", TokenType::FUNC}
 };
 
-namespace
+static std::string tokenNames[] =
 {
-	void incCode(std::vector<std::string> const& code, size_t &i, size_t &j) {
-		if (j < (code[i].size() - 1)) ++j;
-		else {
-			++i;
-			j = 0;
-		}
-	}
+	"IF",
+	"ELSE",
+	"FOR",
+	"WHILE",
+	"DO",
+	"FUNC",
+	"IN",
+	"OUT",
+	"OPEN_BRACKET",
+	"CLOSED_BRACKET",
+	"OPEN_F_BRACKER",
+	"CLOSED_F_BRACKET",
+	"VAR",
+	"ASSIGNMENT",
+	"DOT_AND_COMMA",
+	"VALUE",
+	"PLUS",
+	"MINUS",
+	"DIVIDE",
+	"MULTIPLY",
+	"GREATER",
+	"LESS",
+	"STRING",
+	"COMMA",
+	"DOT",
+};
 
-	bool endOfCode(std::vector<std::string> const& code, size_t i) {
-		if (i >= code.size()) return true;
-		return false;
-	}
+bool IsOperation(Token const& token)
+{
+	return token.type >= TokenType::PLUS && token.type < TokenType::STRING;
+}
 
-	std::string nextWord(std::vector<std::string> const& code, size_t& i, size_t& j) {
-		std::string temp;
-		while (!endOfCode(code, i) &&
-			code[i][j] == ' ') incCode(code, i, j);
-		if (endOfCode(code, i))
-			return "";
-		int k = 0;
-		if (code[i][j] == '"') {//if its string
-			temp += code[i][j];
-			incCode(code, i, j);
-			if (endOfCode(code, i))
-				throw CompileExeption("Unexpected end of code is string", i, j);
-			while (code[i][j] != '"') {//while dont close
-				temp += code[i][j];//read char
-				incCode(code, i, j);
-				if (endOfCode(code, i))
-					throw CompileExeption("Unexpected end of code is string", i, j);
-			}
-			temp += code[i][j];
-			incCode(code, i, j);
-			return temp;
-		}
-		while (code[i][j] != '\0' && //else while not op char
-			code[i][j] != ' ' && code[i][j] != '=' &&
-			code[i][j] != ';' &&
-			code[i][j] != '+' && code[i][j] != '-'
-			&& code[i][j] != '*' && code[i][j] != '/'
-			&& code[i][j] != '(' && code[i][j] != ')'
-			&& code[i][j] != '{' && code[i][j] != '}') {
-			temp += code[i][j];
-			++j;
-			++k;
-		}
-		if (j == (code[i].size())) incCode(code, i, j);
-		//temp += '\0';
-		return temp;
+void PrintTokens(std::vector<Token> const& tokens, std::ostream* ostream)
+{
+	for (auto const& token : tokens)
+	{
+		*ostream << tokenNames[(size_t)token.type] << " ";
 	}
 }
 
@@ -108,6 +96,7 @@ std::vector<Token> LexicalParse(std::vector<std::string> const& code)
 		if (iter != mapOfTokens.end())
 		{
 			tokens.push_back(Token(iter->second));
+			incCode(code, i, j);
 		}
 		else
 		{
@@ -123,7 +112,7 @@ std::vector<Token> LexicalParse(std::vector<std::string> const& code)
 				tokens.push_back(Token(temp[0] == '"' ? TokenType::STRING : TokenType::VALUE, temp));
 			}
 		}
-		incCode(code, i, j);
+		
 	}
 	return tokens;
 }

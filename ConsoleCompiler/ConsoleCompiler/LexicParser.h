@@ -39,4 +39,6 @@ struct Token
 	Token(TokenType t, std::string const& v) : type(t), value(v) {}
 };
 
+bool IsOperation(Token const& token);
 std::vector<Token> LexicalParse(std::vector<std::string> const& code);
+void PrintTokens(std::vector<Token> const& tokens, std::ostream* ostream);

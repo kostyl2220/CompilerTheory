@@ -24,9 +24,12 @@ Variable Element::run(Blackboard& blackboard) throw(ExceptionBase){
 			}
 		throw VariableNotFoundException("Using of undeclared variable", line, column);
 	}
-	else if (value.find('.') >= 0)//convert number on int or double
-		return Variable(value, "rValue", "double");
-	else return Variable(value, "rValue", "int");
+	else
+	{
+		if (value.find('.') >= 0)//convert number on int or double
+			return Variable(value, "rValue", "double");
+		else return Variable(value, "rValue", "int");
+	}
 }
 
 bool Element::isTrue() {

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "parse.h"
 #include "Exceptions.h"
+#include "HelperFuncs.h"
+
 const int N = 100;
 int count_of_brackets = 0;
 bool error = false;
