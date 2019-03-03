@@ -1,5 +1,20 @@
 var l = 10.5;
-for (var a = 0; a < 5; a = a + 1)
+var s = 11 * for (var a = 0; a < 5; a = a + 1)
 {
-	l = l + a * 2;
+	l = l 
+	+ a * 2;
 };
+{
+	var foo = func bar(led)
+	{
+		led * led;
+	};
+}
+var boo = bar(4);
+{
+	var p = 0;
+}
+var a = 5 + if (s > 10) 4; else 3;
+out(a);
+var v = in();
+var u = v + 10;

@@ -267,7 +267,7 @@ Element* totalParse(Element* head, vector<std::string> const& code, size_t &i, s
 						else throw CompileExeption("Unexpected token in IN", i, j);
 					}
 					else throw CompileExeption("Unexpected token in IN", i, j);
-					head = new StandartFunction("out", variables);
+					head = new StandartFunction("in", variables);
 				}
 				else if (temp == "func") {
 					string  funcName = nextWord(code, i, j);

@@ -1,0 +1,59 @@
+lowercase ::= "a"..."z"
+  
+uppercase ::= "A"..."Z"
+  
+digit ::= "0"..."9"
+
+arithmetic_symbol ::= "+" | "-" | "*" | "/" | "<" | ">"
+
+system_symbol ::= arithmetic_symbol | "{" | "}" | "(" | ")" | "=" | ";" | " " | """ | "."
+
+system_word ::= "var" | "func" | "in" | "out" | "for" | "while" | "do" | "if" | "else"
+
+string ::= """ letter {letter} """ 
+
+letter ::= lowercase | uppercase
+
+integer ::= digit {digit}
+
+float ::= digit {digit} "." digit {digit}
+
+number ::= float | integer
+
+arithmetic_element ::= not_closed_expression | number 
+
+arithmetic_expression_not_bracket ::= ( arithmetic_element | arithmetic_expression) {arithmetic_symbol arithmetic_expression}
+
+arithmetic_expression ::= ("(" arithmetic_expression_not_bracket ")") | arithmetic_expression_not_bracket 
+ 
+variable ::= letter | digit  { letter | digit }
+
+rValue ::= variable | string | number 
+
+assignment ::= variable "=" rValue | not_closed_expression 
+
+declaration ::= "var" (variable | assignment)
+
+single_expression ::= expression ";"
+
+expression_block ::= "{" { single_expression | expression_block } "}"
+
+closed_expression ::= expression_block | single_expression 
+
+not_closed_expression ::= expression_block | expression 
+
+conditional_expression ::= "if" "(" not_closed_expression ")" (not_closed_expression | closed_expression "else" not_closed_expression)
+
+for_expression ::= "for" "(" not_closed_expression ";" not_closed_expression ";" not_closed_expression ")" not_closed_expression 
+
+while_expression ::= "while" "(" not_closed_expression ")" not_closed_expression 
+
+do_expression ::= "do" closed_expression "while" "(" not_closed_expression ")"
+
+function_declaration ::= "func" variable "(" [variable {"," variable}] ")" expression_block 
+
+function_call ::= variable "(" [variable {"," variable}] ")" 
+
+expression ::= variable | rValue | assignment | declaration | conditional_expression | for_expression | while_expression | do_expression | function_declaration | function_call 
+
+program ::= { closed_expression }

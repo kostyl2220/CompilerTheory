@@ -39,6 +39,7 @@ void Program::addCommand(Element* comm) throw(ExceptionBase){
 }
 
 void Program::outVarList(ostream* output) {
+	*output << std::endl;
 	for (size_t i = 0; i < vars.size(); ++i)
 	{
 		*output << vars[i].getName() << " = " << vars[i].getValue() << std::endl;

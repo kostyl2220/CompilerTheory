@@ -6,3 +6,4 @@ void incCode(std::vector<std::string> const& code, size_t &i, size_t &j); //in n
 bool endOfCode(std::vector<std::string> const& code, size_t i);
 char nextChar(std::vector<std::string> const& code, size_t &i, size_t&j); //next char. not equal to space
 std::string nextWord(std::vector<std::string> const& code, size_t& i, size_t& j); //next valuable word
+bool IsWordValid(std::string const& word);

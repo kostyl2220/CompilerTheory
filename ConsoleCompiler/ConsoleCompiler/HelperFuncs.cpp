@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "HelperFuncs.h"
 #include "Exceptions.h"
+#include <locale>
 
 void incCode(std::vector<std::string> const& code, size_t &i, size_t &j) {
 	if (j == (code[i].size()))
@@ -68,5 +69,33 @@ std::string nextWord(std::vector<std::string> const& code, size_t& i, size_t& j)
 	}
 	if (j == (code[i].size())) incCode(code, i, j);
 	//temp += '\0';
+	if (!IsWordValid(temp))
+	{
+		throw CompileExeption("Invalid word", i, j);
+	}
+
 	return temp;
+}
+
+bool IsWordValid(std::string const& word)
+{
+	auto pos = word.find_first_of('.');
+	if (!isdigit(word[0]))
+	{
+		return pos == std::string::npos;
+	}
+
+	if (pos != word.find_last_of('.'))
+	{
+		return false;
+	}
+
+	for (char const ch : word)
+	{
+		if (!isdigit(ch) && ch != '.')
+		{
+			return false;
+		}
+	}
+	return true;
 }
