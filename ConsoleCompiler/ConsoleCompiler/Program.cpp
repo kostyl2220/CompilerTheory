@@ -46,10 +46,10 @@ void Program::outVarList(ostream* output) {
 	}
 }
 
-void Program::runProgram(ostream* output) throw(ExceptionBase){
+Variable Program::runProgram(ostream* output) throw(ExceptionBase){
 	Blackboard blackboard;
 	blackboard.stream = output;
-	run(blackboard);
+	return run(blackboard);
 }
 
 void Program::addCode(vector<std::string> const& code) throw(ExceptionBase) {

@@ -10,10 +10,11 @@
 #include "Function.h"
 #include "HelperFuncs.h"
 
-static int COUNT_OF_RESERVED = 9;
+
 std::string reserved[] = {
-	"var", "for", "while", "do", "if", "else", "out", "in", "func"
+	"var", "for", "while", "do", "if", "else", "out", "in", "func", "code"
 };
+static int COUNT_OF_RESERVED = 10;
 
 bool isReserved(std::string const& word) {
 	for (int i = 0; i < COUNT_OF_RESERVED; ++i)
@@ -268,6 +269,17 @@ Element* totalParse(Element* head, vector<std::string> const& code, size_t &i, s
 					}
 					else throw CompileExeption("Unexpected token in IN", i, j);
 					head = new StandartFunction("in", variables);
+				}
+				else if (temp == "code") {//reserved unworked function
+					vector<Element*> variables;
+					if (nextChar(code, i, j) == '(') {
+						incCode(code, i, j);
+						if (nextChar(code, i, j) == ')')
+							incCode(code, i, j);
+						else throw CompileExeption("Unexpected token in IN", i, j);
+					}
+					else throw CompileExeption("Unexpected token in IN", i, j);
+					head = new StandartFunction("code", variables);
 				}
 				else if (temp == "func") {
 					string  funcName = nextWord(code, i, j);

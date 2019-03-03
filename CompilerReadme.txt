@@ -36,7 +36,18 @@ Ex: pow(2; 5);
 
 Standart output function:
 You can use function out() with one parameter to output your value to file.
-The same time you can use function in() to input something from console.
+The same time you can use function in() to input something from console. To type value of real variable from code, use ' before name. '<variable_name>
+Ex:
+//real code
+var a = 10;
+var s = in();
+a = 0;
+out(s);
+//console input
+'a
+//output file 
+10
+//Really fancy feature
 
 Line splitting:
 Compilor doesn't care about ends of line, it reads code sequentually. So you can easily type 1 lexeme on one line.
@@ -53,6 +64,11 @@ var s = 11 * for (var a = 0; a < 5; a = a + 1)
 	+ a * 2;
 };
 THIS IS VALID IN THIS LANGUAGE.
+
+Code func:
+You can use code() function, to insert into your code, code, written from console.
+Code from console can use any variable, created in real code. I know, that it's unsafe, but it's funny.
+To stop typing code from console use "end" command. ("end" should be the one word in line without any additional spaces or symbols).
 
 Example of Hello world:
 out("Hello, World!");

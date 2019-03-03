@@ -14,7 +14,7 @@ public:
 	Variable run(Blackboard& blackboard);
 
 	//for main program
-	void runProgram(ostream* ostream) throw(ExceptionBase);
+	Variable runProgram(ostream* ostream) throw(ExceptionBase);
 
 	void addCommand(Element* comm) throw(ExceptionBase);
 
