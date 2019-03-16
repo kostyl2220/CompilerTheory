@@ -19,3 +19,4 @@ out(a);
 var v = in();
 var u = v + 10;
 var c = code();
+var cube = pow2(c);
